@@ -37,7 +37,11 @@ public class Squares extends JPanel
 
 	public Square getSquare(int id)
 	{
-		return squares.get(id);
+		for (Square square : squares)
+		{
+			if (square.id == id) return square;
+		}
+		return null;
 	}
 
 	public Square getSquare(int x, int y)
