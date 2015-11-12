@@ -23,17 +23,12 @@ public class Game extends JFrame implements KeyListener
 	public static final int BOX_Y_OFFSET = 0;
 
 	private int playerX = 2;
-<<<<<<< HEAD
 	
 	private int playerY = 1;
-	
-=======
 
->>>>>>> origin/master
 	private Squares pixels;
 
 	private List<FallingBox> boxes;
-	
 	private List<FallingBox> boxesToRemove;
 
 	public Game()
@@ -94,12 +89,8 @@ public class Game extends JFrame implements KeyListener
 	{
 		boolean leftPressed = isLeftPressed();
 		boolean rightPressed = isRightPressed();
-<<<<<<< HEAD
 		boolean spacePressed = isSpacePressed();
 		
-=======
-
->>>>>>> origin/master
 		if (leftPressed)
 		{
 			if (playerX > 1)
@@ -117,7 +108,6 @@ public class Game extends JFrame implements KeyListener
 				System.out.println("RIGHT");
 			}
 		}
-<<<<<<< HEAD
 		
 		if (spacePressed)
 		{
@@ -128,8 +118,6 @@ public class Game extends JFrame implements KeyListener
 			}
 		
 		}
-
-=======
 
 		long currentTime = System.currentTimeMillis();
 
@@ -158,7 +146,6 @@ public class Game extends JFrame implements KeyListener
 			boxes.remove(box);
 		}
 		boxesToRemove.clear();
->>>>>>> origin/master
 	}
 
 	private void render()
@@ -210,7 +197,6 @@ public class Game extends JFrame implements KeyListener
 
 		return toReturn;
 	}
-<<<<<<< HEAD
 	
 	boolean spacePressed = false;
 	boolean spacePressedFiltered = false;
@@ -224,10 +210,7 @@ public class Game extends JFrame implements KeyListener
 		
 		return toReturn;
 	}
-	
-=======
 
->>>>>>> origin/master
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
