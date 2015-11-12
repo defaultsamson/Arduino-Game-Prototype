@@ -2,29 +2,40 @@ package game.main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
+import game.resource.FallingBox;
 import game.resource.Squares;
 
 public class Game extends JFrame implements KeyListener
 {
 	public static final int PIXEL_INTERVAL = 64;
-	
+
 	private static final long serialVersionUID = 5767179268856809354L;
 
 	public static final int PANEL_SIZE_X = 263; // 263
 	public static final int PANEL_SIZE_Y = 286; // 286
 
-	public static final int BOX_X_OFFSET = 0; 
+	public static final int BOX_X_OFFSET = 0;
 	public static final int BOX_Y_OFFSET = 0;
-	
+
 	private int playerX = 2;
+<<<<<<< HEAD
 	
 	private int playerY = 1;
 	
+=======
+
+>>>>>>> origin/master
 	private Squares pixels;
+
+	private List<FallingBox> boxes;
 	
+	private List<FallingBox> boxesToRemove;
+
 	public Game()
 	{
 		super("Arduino Game Prototype");
@@ -47,6 +58,9 @@ public class Game extends JFrame implements KeyListener
 		}
 		getContentPane().add(pixels);
 
+		boxes = new ArrayList<FallingBox>();
+		boxesToRemove = new ArrayList<FallingBox>();
+		
 		// Makes this visible
 		setVisible(true);
 
@@ -73,12 +87,19 @@ public class Game extends JFrame implements KeyListener
 		}
 	}
 
+	private static final int createInterval = 3000;
+	private long lastCreate = System.currentTimeMillis() - createInterval;
+
 	private void tick()
 	{
 		boolean leftPressed = isLeftPressed();
 		boolean rightPressed = isRightPressed();
+<<<<<<< HEAD
 		boolean spacePressed = isSpacePressed();
 		
+=======
+
+>>>>>>> origin/master
 		if (leftPressed)
 		{
 			if (playerX > 1)
@@ -87,7 +108,7 @@ public class Game extends JFrame implements KeyListener
 				System.out.println("LEFT");
 			}
 		}
-		
+
 		if (rightPressed)
 		{
 			if (playerX < 4)
@@ -96,6 +117,7 @@ public class Game extends JFrame implements KeyListener
 				System.out.println("RIGHT");
 			}
 		}
+<<<<<<< HEAD
 		
 		if (spacePressed)
 		{
@@ -107,17 +129,57 @@ public class Game extends JFrame implements KeyListener
 		
 		}
 
+=======
+
+		long currentTime = System.currentTimeMillis();
+
+		// Creates a new box every createInterval
+		if ((lastCreate + createInterval) < currentTime)
+		{
+			boxes.add(new FallingBox(this));
+			lastCreate = currentTime;
+		}
+
+		// Makes all the boxes fall my one pixel
+		for (FallingBox box : boxes)
+		{
+			box.progressY();
+		}
+		
+		// Progresses all boxes
+		for (FallingBox box : boxes)
+		{
+			box.progressY();
+		}
+		
+		// Removes all the boxes that are set to fall.
+		for (FallingBox box : boxesToRemove)
+		{
+			boxes.remove(box);
+		}
+		boxesToRemove.clear();
+>>>>>>> origin/master
 	}
-	
+
 	private void render()
 	{
 		pixels.clear();
-		
+
 		pixels.getSquare(playerX, 1).fill();
-		
+
+		for (FallingBox box : boxes)
+		{
+			pixels.getSquare(box.getX(), box.getY()).fill();
+		}
+
 		pixels.paintComponent(getContentPane().getGraphics());
 	}
 
+	public void removeBox(FallingBox box)
+	{
+		boxesToRemove.add(box);
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
@@ -125,29 +187,30 @@ public class Game extends JFrame implements KeyListener
 
 	boolean leftPressed = false;
 	boolean leftPressedFiltered = false;
-	
+
 	private boolean isLeftPressed()
 	{
 		boolean toReturn = leftPressedFiltered;
-		
+
 		// Sets it false so that it can only be used once.
 		leftPressedFiltered = false;
-		
+
 		return toReturn;
 	}
-	
+
 	boolean rightPressed = false;
 	boolean rightPressedFiltered = false;
-	
+
 	private boolean isRightPressed()
 	{
 		boolean toReturn = rightPressedFiltered;
-		
+
 		// Sets it false so that it can only be used once.
 		rightPressedFiltered = false;
-		
+
 		return toReturn;
 	}
+<<<<<<< HEAD
 	
 	boolean spacePressed = false;
 	boolean spacePressedFiltered = false;
@@ -162,6 +225,9 @@ public class Game extends JFrame implements KeyListener
 		return toReturn;
 	}
 	
+=======
+
+>>>>>>> origin/master
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
@@ -170,7 +236,7 @@ public class Game extends JFrame implements KeyListener
 			leftPressed = true;
 			leftPressedFiltered = true;
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT && !rightPressed)
 		{
 			rightPressed = true;
@@ -190,7 +256,7 @@ public class Game extends JFrame implements KeyListener
 		{
 			leftPressed = false;
 		}
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
 			rightPressed = false;
