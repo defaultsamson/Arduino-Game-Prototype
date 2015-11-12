@@ -79,8 +79,9 @@ public class Game extends JFrame implements KeyListener
 			}
 		}
 	}
-
-	private static final int createInterval = 3000;
+	
+	private static final int MIN_INTERVAL = 200;
+	public static int createInterval = 1000;
 	private long lastCreate = System.currentTimeMillis() - createInterval;
 
 	private void tick()
@@ -113,6 +114,16 @@ public class Game extends JFrame implements KeyListener
 		{
 			boxes.add(new FallingBox(this));
 			lastCreate = currentTime;
+			
+			if (FallingBox.getBoxSpeed() > FallingBox.MIN_INTERVAL) 
+			{
+				FallingBox.addBoxSpeed(-5);
+			}
+			
+			if (Game.createInterval > MIN_INTERVAL)
+			{
+				createInterval -= 5;
+			}
 		}
 
 		// Makes all the boxes fall my one pixel

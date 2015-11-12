@@ -9,14 +9,16 @@ public class FallingBox
 	private int x;
 	private int y;
 	
-	private static final int progressInterval = 500;
+	public static final int MIN_INTERVAL = 100;
+	private static int progressInterval = 500;
 	private long lastProgress;
+	private boolean hang = true;
 	
 	private Game game;
 	
 	public FallingBox(Game game)
 	{
-		this(game, new Random().nextInt(3) + 1); // range 1 - 4
+		this(game, new Random().nextInt(4) + 1); // range 1 - 4
 	}
 	
 	public FallingBox(Game game, int x)
@@ -37,19 +39,37 @@ public class FallingBox
 		return y;
 	}
 	
+	public static int getBoxSpeed()
+	{
+		return FallingBox.progressInterval;
+	}
+	
+	public static void addBoxSpeed(int speed)
+	{
+		FallingBox.progressInterval += speed;
+	}
+	
 	public void progressY()
 	{
 		long currentTime = System.currentTimeMillis();
 		
-		if ((lastProgress + progressInterval) < currentTime)
+		if ((lastProgress + FallingBox.progressInterval) < currentTime)
 		{
-			lastProgress = currentTime;
-			y -= 1;
-			
-			if (y < 1)
+			if (!hang)
 			{
-				game.removeBox(this);
+				y -= 1;
+				
+				if (y < 1)
+				{
+					game.removeBox(this);
+				}
 			}
+			else
+			{
+				hang = false;
+			}
+			
+			lastProgress = currentTime;
 		}
 	}
 }
