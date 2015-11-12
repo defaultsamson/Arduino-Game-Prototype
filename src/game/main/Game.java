@@ -133,6 +133,20 @@ public class Game extends JFrame implements KeyListener
 			boxes.remove(box);
 		}
 		boxesToRemove.clear();
+		
+		boolean isColliding = false;
+		
+		// Tests for player collision
+		for (FallingBox box : boxes)
+		{
+			// If the box has the same coordinates of the player
+			if (box.getX() == playerX && box.getY() == 1)
+			{
+				isColliding = true;
+			}
+		}
+		
+		if (isColliding) System.out.println("HOLY SHIT");
 	}
 
 	private void render()
