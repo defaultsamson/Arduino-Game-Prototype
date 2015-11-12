@@ -21,6 +21,13 @@ public class Game extends JFrame implements KeyListener
 	public static final int PANEL_SIZE_X = 263; // 263
 	public static final int PANEL_SIZE_Y = 286; // 286
 
+	public static final int BOX_X_OFFSET = 0; 
+	public static final int BOX_Y_OFFSET = 0;
+	
+	private int playerX = 2;
+	
+	private Squares pixels;
+	
 	public Game()
 	{
 		super("Arduino Game Prototype");
@@ -32,16 +39,16 @@ public class Game extends JFrame implements KeyListener
 
 		addKeyListener(this);
 
-		Squares squares = new Squares();
+		pixels = new Squares();
 		// Generates the background
 		for (int iRow = 0; iRow < 4; iRow++)
 		{
 			for (int iCol = 0; iCol < 4; iCol++)
 			{
-				squares.addSquare((iRow * 4) + iCol, iCol, iRow);
+				pixels.addSquare((iRow * 4) + iCol, iCol, iRow);
 			}
 		}
-		getContentPane().add(squares);
+		getContentPane().add(pixels);
 
 		// Makes this visible
 		setVisible(true);
@@ -63,6 +70,7 @@ public class Game extends JFrame implements KeyListener
 			if ((lastSystemTime + interval) < currentTime)
 			{
 				tick();
+				render();
 				lastSystemTime = currentTime;
 			}
 		}
@@ -75,13 +83,30 @@ public class Game extends JFrame implements KeyListener
 		
 		if (leftPressed)
 		{
-			System.out.println("LEFT");
+			if (playerX > 1)
+			{
+				playerX--;
+				System.out.println("LEFT");
+			}
 		}
 		
 		if (rightPressed)
 		{
-			System.out.println("RIGHT");
+			if (playerX < 4)
+			{
+				playerX++;
+				System.out.println("RIGHT");
+			}
 		}
+	}
+	
+	private void render()
+	{
+		pixels.clear();
+		
+		pixels.getSquare(playerX, 1).fill();
+		
+		pixels.paintComponent(getContentPane().getGraphics());
 	}
 
 	@Override
@@ -178,14 +203,24 @@ class Square extends Rectangle
 		filled = !filled;
 	}
 
-	public Square(int id, int x, int y, int width, int height)
+	public Square(int x, int y)
 	{
-		this(false, id, x, y, width, height);
+		this(false, x, y);
 	}
 
-	public Square(boolean filled, int id, int x, int y, int width, int height)
+	public Square(boolean filled, int x, int y)
 	{
-		super(x, y, width, height);
+		this(filled, 0, x, y);
+	}
+	
+	public Square(int id, int x, int y)
+	{
+		this(false, id, x, y);
+	}
+
+	public Square(boolean filled, int id, int x, int y)
+	{
+		super(x * Game.PIXEL_INTERVAL + Game.BOX_X_OFFSET, y * Game.PIXEL_INTERVAL + Game.BOX_Y_OFFSET, Game.PIXEL_INTERVAL, Game.PIXEL_INTERVAL);
 
 		this.id = id;
 		this.filled = filled;
@@ -202,8 +237,21 @@ class Squares extends JPanel
 
 	public void addSquare(int id, int x, int y)
 	{
-		Square rect = new Square(id, x * Game.PIXEL_INTERVAL, y * Game.PIXEL_INTERVAL, Game.PIXEL_INTERVAL, Game.PIXEL_INTERVAL);
-		squares.add(rect);
+		Square square = new Square(id, x, y);
+		squares.add(square);
+	}
+	
+	public void clear()
+	{
+		for (Square square : squares)
+		{
+			square.setFill(false);
+		}
+	}
+	
+	public void addSquare(Square square)
+	{
+		squares.add(square);
 	}
 
 	public Square getSquare(int id)
