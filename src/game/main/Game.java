@@ -23,8 +23,6 @@ public class Game extends JFrame implements KeyListener
 	public static final int BOX_Y_OFFSET = 0;
 
 	private int playerX = 2;
-	
-	private int playerY = 1;
 
 	private Squares pixels;
 
@@ -89,7 +87,6 @@ public class Game extends JFrame implements KeyListener
 	{
 		boolean leftPressed = isLeftPressed();
 		boolean rightPressed = isRightPressed();
-		boolean spacePressed = isSpacePressed();
 		
 		if (leftPressed)
 		{
@@ -107,16 +104,6 @@ public class Game extends JFrame implements KeyListener
 				playerX++;
 				System.out.println("RIGHT");
 			}
-		}
-		
-		if (spacePressed)
-		{
-			if (playerY == 1)
-			{
-				playerY++;
-				System.out.println("SPACE");
-			}
-		
 		}
 
 		long currentTime = System.currentTimeMillis();
@@ -197,19 +184,6 @@ public class Game extends JFrame implements KeyListener
 
 		return toReturn;
 	}
-	
-	boolean spacePressed = false;
-	boolean spacePressedFiltered = false;
-	
-	private boolean isSpacePressed()
-	{
-		boolean toReturn = spacePressedFiltered;
-		
-		// Sets it false so that it can only be used once.
-		spacePressedFiltered = false;
-		
-		return toReturn;
-	}
 
 	@Override
 	public void keyPressed(KeyEvent e)
@@ -224,11 +198,6 @@ public class Game extends JFrame implements KeyListener
 		{
 			rightPressed = true;
 			rightPressedFiltered = true;
-		}
-		if (e.getKeyCode() == KeyEvent.VK_SPACE && !spacePressed)
-		{
-			spacePressed = true;
-			spacePressedFiltered = true;
 		}
 	}
 
